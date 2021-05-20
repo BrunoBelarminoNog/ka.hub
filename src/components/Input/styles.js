@@ -22,7 +22,7 @@ export const InputContainer = styled.div`
   display: flex;
   transition: 0.4s;
   align-items: center;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem 1rem;
 
 
   ${(props) =>

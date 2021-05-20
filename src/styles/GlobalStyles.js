@@ -1,6 +1,8 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { ToastContainer } from 'react-toastify';
 
+import TagImg from '../assets/st.svg'
+ 
 export const GlobalStyles = createGlobalStyle`
 
 :root {
@@ -45,6 +47,19 @@ body {
 	color: var(--white);
 	font-family: 'Montserrat', sans-serif;
 }
+
+body::before {
+	content: "";
+	width: 650px;
+	height: 650px;
+	position: fixed;
+	bottom: -150px;
+	right: -120px;
+	opacity: .09;
+	z-index: -1;
+	background: url(${TagImg});
+}
+
 ol, ul {
 	list-style: none;
 }
