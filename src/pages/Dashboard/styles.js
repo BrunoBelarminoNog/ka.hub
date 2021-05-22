@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Modal } from "@material-ui/core";
 
 export const Container = styled.div`
   width: 100%;
@@ -108,14 +109,44 @@ export const CardContainer = styled.section`
       margin-right: 8px;
     }
   }
+
+  button {
+    width: 80%;
+    padding: 16px;
+    border-radius: 4px;
+    background: var(--blue);
+    color: var(--white);
+    font-weight: 500;
+    /* align-self: flex-end; */
+  }
 `;
 
-export const InputContainer = styled.form`
-  padding: 0 38px;
+export const InputContainer = styled.div`
+  padding: 38px;
   margin-top: 32px;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
+  background-color: var(--darkgray);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  border-radius: 8px;
+
+  form {
+    width: 100%;
+
+  &:last-of-type button{
+      margin-top: 1rem;
+      background: var(--red);
+    }
+  }
+
+  &:last-child {
+    bottom: 0;
+  }
 
   > div {
     display: flex;
@@ -155,5 +186,52 @@ export const InputContainer = styled.form`
     color: var(--white);
     font-weight: 500;
     align-self: flex-end;
+    margin-top: 1rem;
+    
   }
+
+`;
+
+export const TechCOntainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 2rem;
+  text-align: center;
+
+  h5 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+`;
+
+export const TechCard = styled.div`
+  width: 48%;
+  border: 2px solid var(--blue);
+  border-radius: 6px;
+  padding: 8px 4px;
+  text-align: center;
+  padding: 12px 6px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+transition: all 300ms;
+  h5 {
+    font-weight: 600;
+  }
+
+  span {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.9em;
+  }
+
+  &:hover {
+   box-shadow: 0px 0px 15px -1px rgba(250,250,250,0.4);
+  }
+`;
+
+export const ModalStyled = styled(Modal)`
+  background-color: rgba(0, 0, 0, 0.5);
 `;

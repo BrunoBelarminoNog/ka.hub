@@ -13,6 +13,9 @@ import {
   AsideContainer,
   AccountContainer,
   InputContainer,
+  TechCOntainer,
+  TechCard,
+  ModalStyled,
 } from "./styles";
 import ImageNotFound from "../../assets/imagenotfound.webp";
 import { FiEdit2, FiMail, FiPhone } from "react-icons/fi";
@@ -24,11 +27,42 @@ function Dashboard({ userId }) {
   const [user, setUser] = useState({});
   const [level, setLevel] = useState("Iniciante");
   const token = JSON.parse(localStorage.getItem("@KenzieHub:token"));
+  const id = JSON.parse(localStorage.getItem("@KenzieHub:id"));
 
+  const [open, setOpen] = useState(false);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [techEdited, setTechEdit] = useState({});
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpenModalEdit = (index) => {
+    if (openModalEdit) {
+      setOpenModalEdit(false);
+      setTechEdit({});
+
+    } else {
+      console.log(index);
+      const tech = user.techs[index]
+      console.log(tech);
+      setTechEdit({ ...tech });
+      setOpenModalEdit(true);
+    }
+  };
 
   useEffect(() => {
-    const id = JSON.parse(localStorage.getItem("@KenzieHub:id"));
+    console.log(id);
 
+    loadUserData(id)
+     // eslint-disable-next-line
+  }, []);
+
+  const loadUserData = (id) => {
     api.get(`/users/${id}`).then((res) => {
       const { name, email, course_module, bio, contact, techs } = res.data;
 
@@ -43,26 +77,78 @@ function Dashboard({ userId }) {
 
       setUser({ ...user });
     });
-  }, []);
+  }
 
   const { register, handleSubmit } = useForm();
 
   const submitNewTech = (data) => {
-    console.log(data, level);
-    if(!data.tech) {
-        return toast.error("Complete o campo para enviar")
+    if (!data.tech) {
+      return toast.error("Complete o campo para enviar");
     }
 
-    api.post("/users/tech", {
-        tech: data.tech,
-        status: level
-    },
-    {
-        headers: {
-            Authorization: `Bearer ${token}`
+    const tech = {
+      title: data.tech,
+      status: level,
+    };
+
+    api
+      .post(
+        "/users/techs",
+        {
+          title: data.tech,
+          status: level,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-    }).then(res => console.log(res))
-    .catch(err => toast.error("Erro ao inserir nova tecnologia"))
+      )
+      .then((_) => {
+        let { name, email, course_module, bio, contact, techs } = user;
+
+        techs = [...techs, tech];
+
+        setUser({ name, email, course_module, bio, contact, techs });
+      })
+      .catch((err) => toast.error("Erro ao inserir nova tecnologia"));
+  };
+
+  const submitEditTech = (data) => {
+    console.log(techEdited);
+    api
+      .put(
+        `/users/techs/${data.idTech}`,
+        { status: techEdited.status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((_) => {
+        loadUserData(id)
+        handleOpenModalEdit()
+      })
+      .catch((err) => toast.error("Erro ao atualizar tecnologia"));
+  };
+
+  const submitDeleteTech = (data) => {
+    api
+      .delete(
+        `/users/techs/${data.idTech}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((_) => {
+        loadUserData(id)
+        handleOpenModalEdit()
+      })
+      .catch((err) => toast.error("Erro ao deletar tecnologia"))
+
   };
 
   return (
@@ -96,44 +182,142 @@ function Dashboard({ userId }) {
             <p>{user.bio}</p>
           </CardContainer>
           <CardContainer>
-            <h3>Tecnologias</h3>
-            <InputContainer onSubmit={handleSubmit(submitNewTech)}>
-              <div>
-                <Input
-                  icon={FiEdit2}
-                  placeholder="Nova tecnologia"
-                  register={register}
-                  name="tech"
-                  id="tech"
-                  label="Inserir nova tecnologia"
-                />
-              </div>
-              <div className={"radio"}>
-                <h5>Nível</h5>
-                <RadioGroup
-                  name="status"
-                  row
-                  value={level}
-                  onChange={(e) => setLevel(e.target.value)}
-                >
-                  <FormControlLabel
-                    control={<Radio value="Iniciante" color="primary" />}
-                    label="Iniciante"
-                  />
+            <h3>Minhas hard skills</h3>
 
-                  <FormControlLabel
-                    control={<Radio value="Intermediário" color="primary" />}
-                    label="Intermediário"
-                  />
+            <ModalStyled
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="simple-modal-description"
+            >
+              <InputContainer onSubmit={handleSubmit(submitNewTech)}>
+                <form>
+                  <div>
+                    <Input
+                      icon={FiEdit2}
+                      placeholder="Nova tecnologia"
+                      register={register}
+                      name="tech"
+                      id="tech"
+                      label="Inserir nova tecnologia"
+                    />
+                  </div>
+                  <div className={"radio"}>
+                    <h5>Nível</h5>
+                    <RadioGroup
+                      name="status"
+                      row
+                      value={level}
+                      onChange={(e) => setLevel(e.target.value)}
+                    >
+                      <FormControlLabel
+                        control={<Radio value="Iniciante" color="primary" />}
+                        label="Iniciante"
+                      />
 
-                  <FormControlLabel
-                    control={<Radio value="Avançado" color="primary" />}
-                    label="Avançado"
-                  />
-                </RadioGroup>
-                <button type="submit">Inserir</button>
-              </div>
-            </InputContainer>
+                      <FormControlLabel
+                        control={
+                          <Radio value="Intermediário" color="primary" />
+                        }
+                        label="Intermediário"
+                      />
+
+                      <FormControlLabel
+                        control={<Radio value="Avançado" color="primary" />}
+                        label="Avançado"
+                      />
+                    </RadioGroup>
+                    <button type="submit">Inserir</button>
+                  </div>
+                </form>
+              </InputContainer>
+            </ModalStyled>
+
+            <TechCOntainer>
+              {user.techs?.length > 0 ? (
+                <>
+                  {user.techs?.map((tech, index) => (
+                    <TechCard
+                      key={index}
+                      onClick={() => handleOpenModalEdit(index)}
+                    >
+                      <h5>{tech.title}</h5>
+                      <span>{tech.status}</span>
+                      <input type="hidden" name="id" value={tech.id} />
+                    </TechCard>
+                  ))}
+                </>
+              ) : (
+                <h5>Não há nenhuma tecnologia cadastrada</h5>
+              )}
+            </TechCOntainer>
+
+            <ModalStyled open={openModalEdit} onClose={handleOpenModalEdit}>
+              <>
+                <InputContainer>
+                  <form onSubmit={handleSubmit(submitEditTech)}>
+                    <div>
+                      <Input
+                        icon={FiEdit2}
+                        placeholder="Nova tecnologia"
+                        register={register}
+                        name="tech"
+                        id="tech"
+                        label="Editar tecnologia"
+                        value={techEdited.title}
+                        disabled
+                      />
+                    </div>
+                    <div className={"radio"}>
+                      <h5>Nível</h5>
+                      <RadioGroup
+                        name="status"
+                        row
+                        value={techEdited.status}
+                        onChange={(e) =>
+                          setTechEdit({
+                            ...techEdited,
+                            status: e.target.value,
+                          })
+                        }
+                      >
+                        <FormControlLabel
+                          control={<Radio value="Iniciante" color="primary" />}
+                          label="Iniciante"
+                        />
+
+                        <FormControlLabel
+                          control={
+                            <Radio value="Intermediário" color="primary" />
+                          }
+                          label="Intermediário"
+                        />
+
+                        <FormControlLabel
+                          control={<Radio value="Avançado" color="primary" />}
+                          label="Avançado"
+                        />
+                      </RadioGroup>
+                      <input
+                        type="hidden"
+                        name="idTech"
+                        value={techEdited.id}
+                        {...register('idTech')}
+                      />
+
+                      <button type="submit">Atualizar</button>
+                    </div>  
+                  </form>
+                  <form onSubmit={handleSubmit(submitDeleteTech)}>
+                    <input type="hidden" name="idTech" value={techEdited.id} />
+                    <button type="submit">Excluir</button>
+                  </form>
+                </InputContainer>
+              </>
+            </ModalStyled>
+            <button type="button" onClick={handleOpen}>
+              Adicionar nova tecnologia
+            </button>
           </CardContainer>
         </ContentContainer>
       </AccountContainer>
