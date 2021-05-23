@@ -142,6 +142,12 @@ export const InputContainer = styled.div`
       margin-top: 1rem;
       background: var(--red);
     }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
   }
 
   &:last-child {

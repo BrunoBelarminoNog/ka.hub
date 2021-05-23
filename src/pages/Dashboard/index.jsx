@@ -41,6 +41,14 @@ function Dashboard({ userId }) {
     // eslint-disable-next-line
   }, []);
 
+  // useEffect(()=> {
+    
+  //   if(Object.keys(techEdited).length > 0) {
+  //     setOpenModalEdit(!openModalEdit)
+  //   }
+  //   // eslint-disable-next-line
+  // }, [techEdited])
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -114,9 +122,6 @@ function Dashboard({ userId }) {
   };
 
   const submitEditTech = (data) => {
-    console.log(techEdited.id);
-    console.log(data.idTech);
-    console.log(token);
     api
       .put(
         `/users/techs/${techEdited.id}`,
@@ -259,16 +264,7 @@ function Dashboard({ userId }) {
                 <InputContainer>
                   <form onSubmit={handleSubmit(submitEditTech)}>
                     <div>
-                      <Input
-                        icon={FiEdit2}
-                        placeholder="Nova tecnologia"
-                        register={register}
-                        name="tech"
-                        id="tech"
-                        label="Editar tecnologia"
-                        value={techEdited.title}
-                        disabled
-                      />
+                      <h1>Editar {techEdited.title}</h1>
                     </div>
                     <div className={"radio"}>
                       <h5>Nível</h5>
