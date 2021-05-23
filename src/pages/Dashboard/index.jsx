@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import * as yup from "yup";
 
 import api from "../../service/api";
 
@@ -16,6 +14,7 @@ import {
   TechCOntainer,
   TechCard,
   ModalStyled,
+  ConfirmDelete,
 } from "./styles";
 import ImageNotFound from "../../assets/imagenotfound.webp";
 import { FiEdit2, FiMail, FiPhone } from "react-icons/fi";
@@ -33,6 +32,15 @@ function Dashboard({ userId }) {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [techEdited, setTechEdit] = useState({});
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  useEffect(() => {
+    console.log(id);
+
+    loadUserData(id);
+    // eslint-disable-next-line
+  }, []);
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -45,22 +53,14 @@ function Dashboard({ userId }) {
     if (openModalEdit) {
       setOpenModalEdit(false);
       setTechEdit({});
-
     } else {
       console.log(index);
-      const tech = user.techs[index]
+      const tech = user.techs[index];
       console.log(tech);
       setTechEdit({ ...tech });
       setOpenModalEdit(true);
     }
   };
-
-  useEffect(() => {
-    console.log(id);
-
-    loadUserData(id)
-     // eslint-disable-next-line
-  }, []);
 
   const loadUserData = (id) => {
     api.get(`/users/${id}`).then((res) => {
@@ -77,7 +77,7 @@ function Dashboard({ userId }) {
 
       setUser({ ...user });
     });
-  }
+  };
 
   const { register, handleSubmit } = useForm();
 
@@ -105,20 +105,21 @@ function Dashboard({ userId }) {
         }
       )
       .then((_) => {
-        let { name, email, course_module, bio, contact, techs } = user;
-
-        techs = [...techs, tech];
-
-        setUser({ name, email, course_module, bio, contact, techs });
+        toast.success(`${tech.title} foi inserido com sucesso!`)
+        setUser({});
+        loadUserData(id);
+        handleClose();
       })
       .catch((err) => toast.error("Erro ao inserir nova tecnologia"));
   };
 
   const submitEditTech = (data) => {
-    console.log(techEdited);
+    console.log(techEdited.id);
+    console.log(data.idTech);
+    console.log(token);
     api
       .put(
-        `/users/techs/${data.idTech}`,
+        `/users/techs/${techEdited.id}`,
         { status: techEdited.status },
         {
           headers: {
@@ -127,28 +128,29 @@ function Dashboard({ userId }) {
         }
       )
       .then((_) => {
-        loadUserData(id)
-        handleOpenModalEdit()
+        toast.success(`${techEdited.title} foi atualizado!`)
+        setUser({});
+        loadUserData(id);
+        handleOpenModalEdit();
       })
       .catch((err) => toast.error("Erro ao atualizar tecnologia"));
   };
 
-  const submitDeleteTech = (data) => {
+  const submitDeleteTech = () => {
     api
-      .delete(
-        `/users/techs/${data.idTech}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((_) => {
-        loadUserData(id)
-        handleOpenModalEdit()
+      .delete(`/users/techs/${techEdited.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .catch((err) => toast.error("Erro ao deletar tecnologia"))
-
+      .then((_) => {
+        toast.success(`${techEdited.title} foi excluído!`)
+        setConfirmDelete(false)
+        setUser({})
+        loadUserData(id);
+        handleOpenModalEdit();
+      })
+      .catch((err) => toast.error("Erro ao deletar tecnologia"));
   };
 
   return (
@@ -274,12 +276,13 @@ function Dashboard({ userId }) {
                         name="status"
                         row
                         value={techEdited.status}
-                        onChange={(e) =>
+                        onChange={(e) => {
                           setTechEdit({
                             ...techEdited,
                             status: e.target.value,
                           })
-                        }
+                          console.log(techEdited);
+                        }}
                       >
                         <FormControlLabel
                           control={<Radio value="Iniciante" color="primary" />}
@@ -302,15 +305,26 @@ function Dashboard({ userId }) {
                         type="hidden"
                         name="idTech"
                         value={techEdited.id}
-                        {...register('idTech')}
+                        {...register("idTech")}
                       />
 
                       <button type="submit">Atualizar</button>
-                    </div>  
+                    </div>
                   </form>
                   <form onSubmit={handleSubmit(submitDeleteTech)}>
                     <input type="hidden" name="idTech" value={techEdited.id} />
-                    <button type="submit">Excluir</button>
+                    {
+                      confirmDelete ? (
+
+                        <ConfirmDelete>
+                          <button type="submit">Confirmar exclusão</button>
+                          <button type="button" onClick={()=> setConfirmDelete(false)} style={{background:'var(--blue)'}}>Voltar</button>
+
+                        </ConfirmDelete>
+                      ) : (
+                        <button type="button" onClick={()=> setConfirmDelete(true)}>Excluir</button>
+                      )
+                    }
                   </form>
                 </InputContainer>
               </>

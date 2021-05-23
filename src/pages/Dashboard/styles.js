@@ -138,7 +138,7 @@ export const InputContainer = styled.div`
   form {
     width: 100%;
 
-  &:last-of-type button{
+    &:last-of-type button {
       margin-top: 1rem;
       background: var(--red);
     }
@@ -187,9 +187,7 @@ export const InputContainer = styled.div`
     font-weight: 500;
     align-self: flex-end;
     margin-top: 1rem;
-    
   }
-
 `;
 
 export const TechCOntainer = styled.div`
@@ -216,7 +214,7 @@ export const TechCard = styled.div`
   padding: 12px 6px;
   margin-bottom: 1rem;
   cursor: pointer;
-transition: all 300ms;
+  transition: all 300ms;
   h5 {
     font-weight: 600;
   }
@@ -228,10 +226,33 @@ transition: all 300ms;
   }
 
   &:hover {
-   box-shadow: 0px 0px 15px -1px rgba(250,250,250,0.4);
+    box-shadow: 0px 0px 15px -1px rgba(250, 250, 250, 0.4);
   }
 `;
 
 export const ModalStyled = styled(Modal)`
   background-color: rgba(0, 0, 0, 0.5);
+`;
+
+export const ConfirmDelete = styled.div`
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  button {
+    width: 100%;
+    padding: 0;
+    border-radius: 4px;
+    background: var(--blue);
+    color: var(--white);
+    font-weight: 500;
+    margin-top: 1rem;
+    height: 60px;
+
+    &:last-child {
+      margin-left: 8px;
+    }
+  }
 `;

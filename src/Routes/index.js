@@ -1,26 +1,11 @@
-import { useEffect, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 
 import Home from "../pages/Home";
 import SignUp from "../pages/SignUp";
 
-const Routes = () => {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [userId, setUserId] = useState("");
-
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("@KenzieHub:token"));
-    const id = JSON.parse(localStorage.getItem("@KenzieHub:id"));
-
-    if (token) {
-      setAuthenticated(true);
-    }
-
-    if (id) {
-      setUserId(id)
-    }
-  }, [authenticated]);
+const Routes = ({authenticated, setAuthenticated, userId}) => {
+  
 
   return (
     <Switch>
