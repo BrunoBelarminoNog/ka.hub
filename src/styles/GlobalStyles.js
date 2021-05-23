@@ -114,6 +114,10 @@ a {
 button {
     cursor: pointer;
 	font-family: 'Montserrat', sans-serif;
+	transition: all 300ms;
+	&:hover {
+		filter: brightness(.9);
+	}
 }
 
 `;

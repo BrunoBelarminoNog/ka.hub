@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { FiEdit2, FiMail, FiPhone } from "react-icons/fi";
+import { Radio, FormControlLabel, RadioGroup, LinearProgress } from "@material-ui/core";
+import { toast } from "react-toastify";
 
 import api from "../../service/api";
-
+import Input from "../../components/Input";
 import {
   Container,
   HeaderContainer,
@@ -15,14 +18,12 @@ import {
   TechCard,
   ModalStyled,
   ConfirmDelete,
+  Loading,
 } from "./styles";
-import ImageNotFound from "../../assets/imagenotfound.webp";
-import { FiEdit2, FiMail, FiPhone } from "react-icons/fi";
-import Input from "../../components/Input";
-import { Radio, FormControlLabel, RadioGroup } from "@material-ui/core";
-import { toast } from "react-toastify";
 
-function Dashboard({ userId }) {
+import ImageNotFound from "../../assets/imagenotfound.webp";
+
+function Dashboard() {
   const [user, setUser] = useState({});
   const [level, setLevel] = useState("Iniciante");
   const token = JSON.parse(localStorage.getItem("@KenzieHub:token"));
@@ -35,19 +36,9 @@ function Dashboard({ userId }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
-    console.log(id);
-
     loadUserData(id);
     // eslint-disable-next-line
   }, []);
-
-  // useEffect(()=> {
-    
-  //   if(Object.keys(techEdited).length > 0) {
-  //     setOpenModalEdit(!openModalEdit)
-  //   }
-  //   // eslint-disable-next-line
-  // }, [techEdited])
 
   const handleOpen = () => {
     setOpen(true);
@@ -60,11 +51,10 @@ function Dashboard({ userId }) {
   const handleOpenModalEdit = (index) => {
     if (openModalEdit) {
       setOpenModalEdit(false);
+      setConfirmDelete(false);
       setTechEdit({});
     } else {
-      console.log(index);
       const tech = user.techs[index];
-      console.log(tech);
       setTechEdit({ ...tech });
       setOpenModalEdit(true);
     }
@@ -160,6 +150,15 @@ function Dashboard({ userId }) {
 
   return (
     <Container>
+      {
+        !user.name && (
+          <ModalStyled open>
+            <Loading>
+              <LinearProgress />
+            </Loading>
+          </ModalStyled>
+        ) 
+      }
       <HeaderContainer></HeaderContainer>
       <AccountContainer>
         <AsideContainer>

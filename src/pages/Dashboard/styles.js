@@ -262,3 +262,13 @@ export const ConfirmDelete = styled.div`
     }
   }
 `;
+
+export const Loading = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 500px;
+  height: 50px;
+`;
