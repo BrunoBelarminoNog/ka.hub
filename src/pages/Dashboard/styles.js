@@ -10,20 +10,30 @@ export const Container = styled.div`
 
 export const HeaderContainer = styled.div`
   width: 100%;
-  height: 200px;
-  opacity: 0.8;
+  height: 140px;
+  opacity: 0.9;
   position: relative;
   background-image: ${(props) => `var(--design-${props.design})`};
+  background-repeat: no-repeat;
+  background-size: cover;
   margin-top: 80px;
 
-    div {
+  div {
     position: absolute;
     bottom: 8px;
-    right: 1vw;
+    right: 12px;
     background: var(--darkgray);
     padding: 16px;
     border-radius: 8px;
     cursor: pointer;
+  }
+
+  @media screen and (min-width: 540px) {
+    height: 200px;
+
+    div {
+      right: 2vw;
+    }
   }
 `;
 
@@ -31,16 +41,25 @@ export const AccountContainer = styled.main`
   width: 95vw;
   max-width: 980px;
   display: flex;
-  justify-content: space-between;
   margin-top: 2rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media screen and (min-width: 540px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 `;
 
 export const AsideContainer = styled.div`
-  width: 35%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
   transform: translateY(-70px);
+  align-self: flex-start;
+  margin-left: 12px;
 
   img {
     width: 180px;
@@ -49,10 +68,21 @@ export const AsideContainer = styled.div`
     border: 4px solid var(--white);
     margin-bottom: 2rem;
   }
+
+  @media screen and (min-width: 540px) {
+    width: 35%;
+    margin-left: 0;
+  }
 `;
 
 export const ContentContainer = styled.div`
-  width: 60%;
+  width: 95%;
+  transform: translateY(-70px);
+
+  @media screen and (min-width: 540px) {
+    width: 60%;
+    transform: translateY(-26px);
+  }
 `;
 
 export const CardContainer = styled.section`

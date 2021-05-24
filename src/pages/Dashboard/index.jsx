@@ -42,7 +42,7 @@ function Dashboard() {
   }, []);
 
   const handleDesign = () => {
-    if (design < 6) {
+    if (design <= 6) {
       setDesign(design + 1)
     } else {
       setDesign(1)
