@@ -10,18 +10,21 @@ export const Container = styled.div`
 
 export const HeaderContainer = styled.div`
   width: 100%;
-  height: 220px;
+  height: 200px;
   opacity: 0.8;
-  background-image: repeating-radial-gradient(
-    circle at 17% 32%,
-    rgb(235, 243, 60),
-    rgb(149, 112, 197),
-    rgb(115, 252, 224),
-    rgb(116, 71, 5),
-    rgb(223, 46, 169),
-    rgb(73, 80, 75),
-    rgb(231, 248, 17) 2px
-  );
+  position: relative;
+  background-image: ${(props) => `var(--design-${props.design})`};
+  margin-top: 80px;
+
+    div {
+    position: absolute;
+    bottom: 8px;
+    right: 1vw;
+    background: var(--darkgray);
+    padding: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
 `;
 
 export const AccountContainer = styled.main`

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FiEdit2, FiMail, FiPhone } from "react-icons/fi";
+import { FiEdit2, FiMail, FiPhone, FiRefreshCw } from "react-icons/fi";
 import { Radio, FormControlLabel, RadioGroup, LinearProgress } from "@material-ui/core";
 import { toast } from "react-toastify";
 
@@ -32,6 +32,7 @@ function Dashboard() {
   const [open, setOpen] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [techEdited, setTechEdit] = useState({});
+  const [design, setDesign] = useState(1)
 
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -39,6 +40,14 @@ function Dashboard() {
     loadUserData(id);
     // eslint-disable-next-line
   }, []);
+
+  const handleDesign = () => {
+    if (design < 6) {
+      setDesign(design + 1)
+    } else {
+      setDesign(1)
+    }
+  }
 
   const handleOpen = () => {
     setOpen(true);
@@ -159,7 +168,11 @@ function Dashboard() {
           </ModalStyled>
         ) 
       }
-      <HeaderContainer></HeaderContainer>
+      <HeaderContainer design={design}>
+        <div onClick={handleDesign}>
+          <FiRefreshCw />
+        </div>
+      </HeaderContainer>
       <AccountContainer>
         <AsideContainer>
           <CardContainer>
