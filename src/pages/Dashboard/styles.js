@@ -14,8 +14,6 @@ export const HeaderContainer = styled.div`
   opacity: 0.9;
   position: relative;
   background-image: ${(props) => `var(--design-${props.design})`};
-  background-repeat: no-repeat;
-  background-size: cover;
   margin-top: 80px;
 
   div {
@@ -287,7 +285,7 @@ export const ConfirmDelete = styled.div`
     color: var(--white);
     font-weight: 500;
     margin-top: 1rem;
-    height: 60px;
+    height: 50px;
 
     &:last-child {
       margin-left: 8px;

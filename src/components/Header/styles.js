@@ -6,6 +6,7 @@ export const Container = styled.header`
   background-color: var(--darkgray);
   position: fixed;
   z-index: 2;
+  box-shadow: 0px 0px 20px rgba(0,0,0,0.75);
 
   > div {
     width: 95vw;

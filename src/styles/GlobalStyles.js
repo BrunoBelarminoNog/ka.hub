@@ -13,8 +13,8 @@ export const GlobalStyles = createGlobalStyle`
 	--white: #f5f5f4;
 	--blue: #1782FE;
 	--darkblue: #226BBF;
-	--design-1: url(${CapaKa});
-    --design-2: linear-gradient(
+	--design-2: url(${CapaKa});
+    --design-1: linear-gradient(
       90deg,
       hsl(188, 93%, 68%),
       hsl(233, 93%, 68%),
