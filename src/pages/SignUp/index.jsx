@@ -14,7 +14,6 @@ import {
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
 import Input from "../../components/Input";
 import {
   Container,
@@ -25,6 +24,7 @@ import {
 
 import KenzieLogo from "../../assets/logokenzie.svg";
 import api from "../../service/api";
+import { motion } from "framer-motion";
 
 function SignUp() {
   const schema = yup.object().shape({
@@ -69,7 +69,6 @@ function SignUp() {
     course_module,
     avatar_url,
   }) => {
-
     const user = {
       email,
       password,
@@ -80,122 +79,137 @@ function SignUp() {
       avatar_url,
     };
 
-    api.post("/users", user)
-        .then((_) => {
-            toast.success("Sucesso ao criar a conta, faça seu login");
-        
-            return history.push("/");
-          })
-          .catch((error) => toast.error("Erro ao criar a conta, tente outro email"));
+    api
+      .post("/users", user)
+      .then((_) => {
+        toast.success("Sucesso ao criar a conta, faça seu login");
+
+        return history.push("/");
+      })
+      .catch((error) =>
+        toast.error("Erro ao criar a conta, tente outro email")
+      );
   };
 
   return (
     <Container>
       <FormContainer>
-        <FormContent>
-          <h1>Cadastre-se</h1>
-          <form onSubmit={handleSubmit(submitForm)}>
-            <Input
-              register={register}
-              name="name"
-              id="name"
-              error={errors.name?.message}
-              icon={FiUser}
-              label="Nome"
-              placeholder="Nome Completo"
-            />
-            <Input
-              register={register}
-              name="avatar_url"
-              id="avatar_url"
-              error={errors.avatar_url?.message}
-              icon={FiCamera}
-              label="Avatar (url)"
-              type="url"
-              placeholder="http://"
-            />
-            <Input
-              register={register}
-              name="email"
-              id="email"
-              error={errors.email?.message}
-              icon={FiMail}
-              label="Email"
-              placeholder="Digite seu email"
-            />
-            <Input
-              register={register}
-              name="emailConfirm"
-              id="emailConfirm"
-              error={errors.emailConfirm?.message}
-              icon={FiMail}
-              label="Confirmar Email"
-              placeholder="Repita seu email"
-            />
+        <motion.div
+          initial={{ opacity: 0, x: 200 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <FormContent>
+            <h1>Cadastre-se</h1>
+            <form onSubmit={handleSubmit(submitForm)}>
+              <Input
+                register={register}
+                name="name"
+                id="name"
+                error={errors.name?.message}
+                icon={FiUser}
+                label="Nome"
+                placeholder="Nome Completo"
+              />
+              <Input
+                register={register}
+                name="avatar_url"
+                id="avatar_url"
+                error={errors.avatar_url?.message}
+                icon={FiCamera}
+                label="Avatar (url)"
+                type="url"
+                placeholder="http://"
+              />
+              <Input
+                register={register}
+                name="email"
+                id="email"
+                error={errors.email?.message}
+                icon={FiMail}
+                label="Email"
+                placeholder="Digite seu email"
+              />
+              <Input
+                register={register}
+                name="emailConfirm"
+                id="emailConfirm"
+                error={errors.emailConfirm?.message}
+                icon={FiMail}
+                label="Confirmar Email"
+                placeholder="Repita seu email"
+              />
 
-            <Input
-              register={register}
-              name="password"
-              id="password"
-              error={errors.password?.message}
-              icon={FiLock}
-              label="Senha"
-              placeholder="Digite sua senha"
-              type="password"
-            />
-            <Input
-              register={register}
-              name="passwordConfirm"
-              id="passwordConfirm"
-              error={errors.passwordConfirm?.message}
-              icon={FiLock}
-              label="Confirmar Senha"
-              placeholder="Repita sua senha"
-              type="password"
-            />
-            <Input
-              register={register}
-              name="contact"
-              id="contact"
-              error={errors.contact?.message}
-              icon={FiPhone}
-              label="Telefone"
-              placeholder="(__) _____-____ "
-            />
-            <Input
-              register={register}
-              name="course_module"
-              id="course_module"
-              error={errors.course_module?.message}
-              icon={FiBook}
-              label="Módulo no curso"
-            />
-            <Input
-              register={register}
-              name="bio"
-              id="bio"
-              error={errors.bio?.message}
-              icon={FiInfo}
-              label="Sobre você"
-              placeholder="Conte-nos um pouco sobre você"
-            />
-            <button type="submit">Enviar</button>
-            <p>
-              Já tem cadastro? Faça seu <Link to="/">login</Link>
-            </p>
-          </form>
-        </FormContent>
+              <Input
+                register={register}
+                name="password"
+                id="password"
+                error={errors.password?.message}
+                icon={FiLock}
+                label="Senha"
+                placeholder="Digite sua senha"
+                type="password"
+              />
+              <Input
+                register={register}
+                name="passwordConfirm"
+                id="passwordConfirm"
+                error={errors.passwordConfirm?.message}
+                icon={FiLock}
+                label="Confirmar Senha"
+                placeholder="Repita sua senha"
+                type="password"
+              />
+              <Input
+                register={register}
+                name="contact"
+                id="contact"
+                error={errors.contact?.message}
+                icon={FiPhone}
+                label="Telefone"
+                placeholder="(__) _____-____ "
+              />
+              <Input
+                register={register}
+                name="course_module"
+                id="course_module"
+                error={errors.course_module?.message}
+                icon={FiBook}
+                label="Módulo no curso"
+              />
+              <Input
+                register={register}
+                name="bio"
+                id="bio"
+                error={errors.bio?.message}
+                icon={FiInfo}
+                label="Sobre você"
+                placeholder="Conte-nos um pouco sobre você"
+              />
+              <button type="submit">Enviar</button>
+              <p>
+                Já tem cadastro? Faça seu <Link to="/">login</Link>
+              </p>
+            </form>
+          </FormContent>
+        </motion.div>
       </FormContainer>
 
       <ImageContainer>
-        <div>
-          <img src={KenzieLogo} alt="Logo Kenzie Academy" />
-          <span>.HUB</span>
-        </div>
-        <h1>
-          Agora falta pouco para fazer parte do maior Hub de dev's do Brasil
-        </h1>
-        <p>Junte-se a nossa comunidade!</p>
+        <motion.div
+          initial={{ opacity: 0, x: -200 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <div>
+            <img src={KenzieLogo} alt="Logo Kenzie Academy" />
+            <span>.HUB</span>
+          </div>
+          <h1>
+            Agora falta pouco para fazer parte do maior Hub de dev's do Brasil
+          </h1>
+          <p>Junte-se a nossa comunidade!</p>
+        </motion.div>
       </ImageContainer>
     </Container>
   );

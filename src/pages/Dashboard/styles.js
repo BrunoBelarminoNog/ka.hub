@@ -37,8 +37,7 @@ export const AsideContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  transform: translateY(-3rem);
+  transform: translateY(-70px);
 
   img {
     width: 180px;

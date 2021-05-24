@@ -79,15 +79,9 @@ table {
 }
 
 html {
-	font-size: 50%;
+	font-size: 70%;
 }
 
-
-@media screen and (min-width: 360px) {
-	html {
-		font-size: 60%;
-	}
-}
 
 @media screen and (min-width: 480px) {
 	html {
